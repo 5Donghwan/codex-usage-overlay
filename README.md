@@ -7,7 +7,7 @@ Codex 데스크톱 앱의 실제 채팅 입력창 위에 5시간/7일 사용량 
 > OpenAI). "OpenAI"·"ChatGPT"·"Codex"는 각 권리자의 상표입니다. 자세한 조건은
 > [LICENSE](LICENSE)를 참고하세요.
 
-![Codex 입력창 중앙의 5h / 7d 사용량 오버레이](docs/reference-light.jpg)
+![Codex 입력창 중앙의 5h / 7d 사용량 오버레이](docs/screenshot.png)
 
 - Codex 앱 자체는 수정하지 않습니다. 별도 백그라운드 앱의 투명한 `NSPanel`을 위에
   겹쳐 그립니다.
