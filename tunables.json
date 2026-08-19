@@ -1,0 +1,17 @@
+{
+  "barW": 113.6842105,
+  "groupGap": 5.2631579,
+  "panelH": 30,
+  "sidePad": 0,
+  "scale": 0.95,
+  "centerAboveBottom": 32,
+  "titleSize": 12,
+  "valueSize": 12,
+  "barHeight": 4,
+  "labelBarGap": 3,
+  "warnAt": 70,
+  "dangerAt": 90,
+  "appearance": "system",
+  "hideOnOverlap": true,
+  "overlapMargin": 8
+}

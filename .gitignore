@@ -1,0 +1,6 @@
+.build/
+dist/
+.DS_Store
+.omx/
+design-qa.md
+docs/qa-comparison.png
