@@ -44,15 +44,11 @@ struct BarGroup: View {
 }
 
 struct OverlayContent: View {
-    let fiveHour: Double?
     let sevenDay: Double?
     let tunables: Tunables
 
     var body: some View {
-        HStack(spacing: tunables.groupGap) {
-            BarGroup(title: "5h", percent: fiveHour, tunables: tunables)
-            BarGroup(title: "7d", percent: sevenDay, tunables: tunables)
-        }
+        BarGroup(title: "7d", percent: sevenDay, tunables: tunables)
         .padding(.horizontal, tunables.sidePad)
         .frame(width: tunables.contentW, height: tunables.unscaledPanelH)
         .scaleEffect(tunables.scale, anchor: .center)
@@ -65,7 +61,6 @@ struct OverlayView: View {
 
     var body: some View {
         OverlayContent(
-            fiveHour: store.fiveHour,
             sevenDay: store.sevenDay,
             tunables: store.tun
         )
@@ -112,7 +107,6 @@ func renderOverlayPreview(to outputURL: URL, dark: Bool) -> Never {
         ? Color(.sRGB, red: 0.145, green: 0.145, blue: 0.145, opacity: 1)
         : Color(.sRGB, red: 0.985, green: 0.985, blue: 0.985, opacity: 1)
     let rootView = OverlayContent(
-        fiveHour: nil,
         sevenDay: 84,
         tunables: tunables
     )

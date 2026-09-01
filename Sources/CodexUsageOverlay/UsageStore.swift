@@ -5,9 +5,8 @@ import Foundation
 
 struct Tunables: Decodable, Equatable {
     // Design-space values. The complete content is rendered at 95%, producing
-    // an approximately 221 x 30 px visible overlay.
+    // an approximately 108 x 30 px visible overlay.
     var barW: CGFloat = 113.684_210_5  // renders as 108 px after the 95% scale
-    var groupGap: CGFloat = 5.263_157_9
     var panelH: CGFloat = 30
     var sidePad: CGFloat = 0
     var scale: CGFloat = 0.95
@@ -25,7 +24,7 @@ struct Tunables: Decodable, Equatable {
     var appearance = "system"          // system | light | dark
 
     var contentW: CGFloat {
-        barW * 2 + groupGap + sidePad * 2
+        barW + sidePad * 2
     }
 
     var panelW: CGFloat {
@@ -41,7 +40,7 @@ struct Tunables: Decodable, Equatable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case barW, groupGap, panelH, sidePad, scale, centerAboveBottom
+        case barW, panelH, sidePad, scale, centerAboveBottom
         case titleSize, valueSize, barHeight, labelBarGap
         case warnAt, dangerAt, hideOnOverlap, overlapMargin, appearance
     }
@@ -52,7 +51,6 @@ struct Tunables: Decodable, Equatable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let defaults = Tunables()
         barW = try container.decodeIfPresent(CGFloat.self, forKey: .barW) ?? defaults.barW
-        groupGap = try container.decodeIfPresent(CGFloat.self, forKey: .groupGap) ?? defaults.groupGap
         panelH = try container.decodeIfPresent(CGFloat.self, forKey: .panelH) ?? defaults.panelH
         sidePad = try container.decodeIfPresent(CGFloat.self, forKey: .sidePad) ?? defaults.sidePad
         scale = try container.decodeIfPresent(CGFloat.self, forKey: .scale) ?? defaults.scale
@@ -72,7 +70,6 @@ struct Tunables: Decodable, Equatable {
 // MARK: - Codex local usage events
 
 struct UsageSnapshot: Equatable {
-    let fiveHour: Double?
     let sevenDay: Double?
 }
 
@@ -163,13 +160,10 @@ enum UsageSnapshotReader {
                   let limits = event.payload?.rateLimits,
                   limits.limitID == nil || limits.limitID == "codex" else { continue }
 
-            var fiveHour: Double?
             var sevenDay: Double?
             for window in [limits.primary, limits.secondary].compactMap({ $0 }) {
                 let percent = normalizedPercent(window, now: now)
                 switch window.windowMinutes {
-                case 240...360:
-                    fiveHour = percent
                 case 9_000...11_000:
                     sevenDay = percent
                 default:
@@ -178,7 +172,7 @@ enum UsageSnapshotReader {
             }
             return TimedSnapshot(
                 timestamp: parseTimestamp(event.timestamp),
-                snapshot: UsageSnapshot(fiveHour: fiveHour, sevenDay: sevenDay)
+                snapshot: UsageSnapshot(sevenDay: sevenDay)
             )
         }
         return nil
@@ -254,7 +248,6 @@ enum UsageSnapshotReader {
 }
 
 final class UsageStore: ObservableObject {
-    @Published private(set) var fiveHour: Double?
     @Published private(set) var sevenDay: Double?
     @Published private(set) var tun = Tunables()
 
@@ -294,9 +287,7 @@ final class UsageStore: ObservableObject {
             DispatchQueue.main.async {
                 guard let self else { return }
                 self.refreshInFlight = false
-                let newFiveHour = snapshot?.fiveHour
                 let newSevenDay = snapshot?.sevenDay
-                if self.fiveHour != newFiveHour { self.fiveHour = newFiveHour }
                 if self.sevenDay != newSevenDay { self.sevenDay = newSevenDay }
             }
         }

@@ -31,7 +31,6 @@ if CommandLine.arguments.contains("--print-usage") {
     let sessionsRoot = FileManager.default.homeDirectoryForCurrentUser
         .appendingPathComponent(".codex/sessions", isDirectory: true)
     let snapshot = UsageSnapshotReader.latest(in: sessionsRoot)
-    print("5h=\(snapshot?.fiveHour.map { String(Int($0.rounded())) + "%" } ?? "--")")
     print("7d=\(snapshot?.sevenDay.map { String(Int($0.rounded())) + "%" } ?? "--")")
     exit(0)
 }
