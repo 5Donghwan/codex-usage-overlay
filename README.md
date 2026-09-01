@@ -7,13 +7,7 @@ Codex 데스크톱 앱의 실제 채팅 입력창 위에 7일 사용량 BAR를 �
 > OpenAI). "OpenAI"·"ChatGPT"·"Codex"는 각 권리자의 상표입니다. 자세한 조건은
 > [LICENSE](LICENSE)를 참고하세요.
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/overlay-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="docs/overlay-light.png">
-    <img alt="Codex 입력창 중앙의 7일 사용량 오버레이 미리보기" src="docs/overlay-light.png">
-  </picture>
-</p>
+![Codex 입력창 중앙의 사용량 오버레이](docs/screenshot.png)
 
 - Codex 앱 자체는 수정하지 않습니다. 별도 백그라운드 앱의 투명한 `NSPanel`을 위에
   겹쳐 그립니다.
