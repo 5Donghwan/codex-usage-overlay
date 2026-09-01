@@ -13,14 +13,23 @@ private extension Color {
 }
 
 enum Palette {
-    // ChatGPT/Codex-adjacent semantic colors. They remain legible in both themes.
     static let success = Color(hex: 0x43B03F)
     static let warning = Color(hex: 0xFFCC00)
     static let danger = Color(hex: 0xFF453A)
 
-    static func fill(for percent: Double, warnAt: Double, dangerAt: Double) -> Color {
-        if percent >= dangerAt { return danger }
-        if percent >= warnAt { return warning }
-        return success
+    // Brighter variants keep the bars distinct on Codex's dark composer.
+    static let darkSuccess = Color(hex: 0x65E572)
+    static let darkWarning = Color(hex: 0xFFD633)
+    static let darkDanger = Color(hex: 0xFF625A)
+
+    static func fill(
+        for percent: Double,
+        warnAt: Double,
+        dangerAt: Double,
+        dark: Bool = false
+    ) -> Color {
+        if percent >= dangerAt { return dark ? darkDanger : danger }
+        if percent >= warnAt { return dark ? darkWarning : warning }
+        return dark ? darkSuccess : success
     }
 }
