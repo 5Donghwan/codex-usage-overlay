@@ -8,7 +8,7 @@ func runSelfTests() -> Never {
     }
 
     let tunables = Tunables()
-    check(abs(tunables.panelW - 221) < 0.05, "default width should be approximately 221 px")
+    check(abs(tunables.panelW - 108) < 0.05, "default width should be approximately 108 px")
     check(abs(tunables.panelH - 30) < 0.001, "default height should be 30 px")
     check(abs(tunables.scale - 0.95) < 0.001, "default scale should be 95%")
     check(abs(tunables.visibleBarW - 108) < 0.001, "visible bar width should be 10% below 120 px")
@@ -80,14 +80,12 @@ func runSelfTests() -> Never {
     {"payload":{"type":"token_count","rate_limits":{"limit_id":"codex","primary":{"used_percent":42.4,"window_minutes":300,"resets_at":1800000300},"secondary":{"used_percent":84.2,"window_minutes":10080,"resets_at":1800000300}}}}
     """
     let dualWindow = UsageSnapshotReader.parseSnapshot(from: Data(dualWindowLine.utf8), now: now)
-    check(dualWindow?.fiveHour == 42.4, "five-hour usage should parse")
     check(dualWindow?.sevenDay == 84.2, "seven-day usage should parse")
 
     let expiredLine = """
     {"payload":{"type":"token_count","rate_limits":{"limit_id":"codex","primary":{"used_percent":84,"window_minutes":10080,"resets_at":1799999999},"secondary":null}}}
     """
     let expired = UsageSnapshotReader.parseSnapshot(from: Data(expiredLine.utf8), now: now)
-    check(expired?.fiveHour == nil, "missing five-hour usage should stay unknown")
     check(expired?.sevenDay == 0, "expired usage should reset to zero")
 
     let latestLines = """
@@ -144,7 +142,7 @@ func runSelfTests() -> Never {
     }
 
     if failures.isEmpty {
-        print("self-test passed (19 checks)")
+        print("self-test passed (17 checks)")
         exit(0)
     }
     for failure in failures {

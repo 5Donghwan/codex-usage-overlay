@@ -1,19 +1,17 @@
 # CodexUsageOverlay
 
-Codex 데스크톱 앱의 실제 채팅 입력창 위에 5시간/7일 사용량 BAR를 표시하는 macOS
+Codex 데스크톱 앱의 실제 채팅 입력창 위에 7일 사용량 BAR를 표시하는 macOS
 오버레이입니다.
 
 > 비공식 개인 프로젝트로 OpenAI와 무관합니다(Not affiliated with or endorsed by
 > OpenAI). "OpenAI"·"ChatGPT"·"Codex"는 각 권리자의 상표입니다. 자세한 조건은
 > [LICENSE](LICENSE)를 참고하세요.
 
-![Codex 입력창 중앙의 5h / 7d 사용량 오버레이](docs/screenshot.png)
-
 - Codex 앱 자체는 수정하지 않습니다. 별도 백그라운드 앱의 투명한 `NSPanel`을 위에
   겹쳐 그립니다.
 - 데이터는 `~/.codex/sessions`의 로컬 `token_count` 이벤트만 읽습니다. 네트워크 요청,
   쿠키, 토큰, 브라우저 인증 정보에는 접근하지 않습니다.
-- Codex가 제공하는 300분 창은 `5h`, 10,080분 창은 `7d`로 표시합니다.
+- Codex가 제공하는 10,080분 창을 `7d`로 표시합니다.
 - BAR 색상은 사용량에 따라 초록 → 노랑 → 빨강으로 바뀝니다(기본 70% / 90%).
 - 입력창의 가로 중앙을 유지하면서, 세로 중심은 오른쪽 모델 선택 컨트롤의 실제 중심선에
   맞춥니다.
@@ -58,10 +56,9 @@ open dist/CodexUsageOverlay.app
 
 ## 기본 표시 규격
 
-- 전체 크기: 약 **221 × 30pt**
+- 전체 크기: 약 **108 × 30pt**
 - 시각 배율: **95%**
-- BAR 길이: 각각 **108pt**
-- BAR 간격: **5pt**
+- BAR 길이: **108pt**
 - 서체: macOS system UI regular
 - 가로 위치: 실제 입력창 컨테이너의 중앙
 - 세로 위치: 현재 모델 선택 컨트롤의 중심선
@@ -77,12 +74,11 @@ open dist/CodexUsageOverlay.app
 | 필드 | 기본값 | 설명 |
 |---|---:|---|
 | `barW` | `113.6842105` | 95% 배율 전 BAR 길이. 실제 표시 길이는 108pt |
-| `groupGap` | `5.2631579` | 95% 배율 전 두 그룹 사이 간격 |
 | `panelH` | `30` | 오버레이 패널 높이 |
 | `sidePad` | `0` | 좌우 내부 여백 |
 | `scale` | `0.95` | 전체 시각 배율 |
 | `centerAboveBottom` | `32` | 모델 컨트롤 탐지 실패 시 사용하는 세로 중심 오프셋 |
-| `titleSize` | `12` | `5h` / `7d` 제목 크기 |
+| `titleSize` | `12` | `7d` 제목 크기 |
 | `valueSize` | `12` | 퍼센트 수치 크기 |
 | `barHeight` | `4` | BAR 두께 |
 | `labelBarGap` | `3` | 라벨 행과 BAR 사이 간격 |
@@ -143,7 +139,7 @@ grep -E "hidden|shown" ~/Library/Logs/CodexUsageOverlay.log
 
 ## 사용량 색상
 
-두 BAR는 각자의 사용량을 독립적으로 평가합니다.
+BAR 색상은 7일 사용량에 따라 평가됩니다.
 
 | 구간 | 색 | 값 |
 |---|---|---|
@@ -159,7 +155,6 @@ grep -E "hidden|shown" ~/Library/Logs/CodexUsageOverlay.log
 이 앱은 `~/.codex/sessions/YYYY/MM/DD/*.jsonl`의 끝부분에서 최신
 `payload.type == "token_count"` 이벤트를 찾습니다.
 
-- `window_minutes`가 약 300분이면 `5h`
 - `window_minutes`가 약 10,080분이면 `7d`
 - `limit_id`가 있으면 `codex` 이벤트만 사용
 - 만료 시각이 지났으면 해당 사용량을 0%로 처리
