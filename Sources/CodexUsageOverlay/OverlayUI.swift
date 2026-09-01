@@ -5,24 +5,34 @@ struct BarGroup: View {
     let title: String
     let percent: Double?
     let tunables: Tunables
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         VStack(spacing: tunables.labelBarGap) {
             HStack(spacing: 0) {
                 Text(title)
                     .font(.system(size: tunables.titleSize, weight: .regular, design: .default))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.primary.opacity(0.92))
                 Spacer(minLength: 0)
                 Text(percent.map { "\(Int($0.rounded()))%" } ?? "--")
                     .font(.system(size: tunables.valueSize, weight: .regular, design: .default))
-                    .foregroundStyle(percent == nil ? AnyShapeStyle(.secondary) : AnyShapeStyle(.primary))
+                    .foregroundStyle(
+                        percent == nil
+                            ? AnyShapeStyle(Color.primary.opacity(0.62))
+                            : AnyShapeStyle(Color.primary.opacity(0.96))
+                    )
             }
             ZStack(alignment: .leading) {
-                Capsule().fill(Color.primary.opacity(0.14))
+                Capsule().fill(Color.primary.opacity(colorScheme == .dark ? 0.28 : 0.14))
                 if let percent {
                     GeometryReader { geometry in
                         Capsule()
-                            .fill(Palette.fill(for: percent, warnAt: tunables.warnAt, dangerAt: tunables.dangerAt))
+                            .fill(Palette.fill(
+                                for: percent,
+                                warnAt: tunables.warnAt,
+                                dangerAt: tunables.dangerAt,
+                                dark: colorScheme == .dark
+                            ))
                             .frame(width: geometry.size.width * min(max(percent, 0), 100) / 100)
                     }
                 }

@@ -7,7 +7,7 @@
   "centerAboveBottom": 32,
   "titleSize": 12,
   "valueSize": 12,
-  "barHeight": 4,
+  "barHeight": 5,
   "labelBarGap": 3,
   "warnAt": 70,
   "dangerAt": 90,
